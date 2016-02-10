@@ -1,0 +1,22 @@
+setwd("C:/Users/Rnikols/datascience/4 Exploratory Data Analysis/Project 1")
+data <- read.table("./household_power_consumption.txt", header=TRUE, sep=";", stringsAsFactors=FALSE, dec=".")
+subSetData <- data[data$Date %in% c("1/2/2007","2/2/2007") ,]
+
+t <- strptime(paste(subSetData$Date, subSetData$Time, sep=" "), "%d/%m/%Y %H:%M:%S") 
+GAP <- as.numeric(subSetData$Global_active_power)
+GRP <- as.numeric(subSetData$Global_reactive_power)
+v <- as.numeric(subSetData$Voltage)
+SM1 <- as.numeric(subSetData$Sub_metering_1)
+SM2 <- as.numeric(subSetData$Sub_metering_2)
+SM3 <- as.numeric(subSetData$Sub_metering_3)
+
+png("plot4.png", width=480, height=480)
+par(mfrow = c(2, 2)) 
+plot(t, GAP, type="l", xlab="", ylab="Global Active Power", cex=0.2)
+plot(t, v, type="l", xlab="datetime", ylab="Voltage")
+plot(t, SM1, type="l", ylab="Energy Submetering", xlab="")
+lines(t, SM2, type="l", col="red")
+lines(t, SM3, type="l", col="blue")
+legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty=, lwd=2.5, col=c("black", "red", "blue"), bty="o")
+plot(t, GRP, type="l", xlab="datetime", ylab="Global_reactive_power")
+dev.off()
